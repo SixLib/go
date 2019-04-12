@@ -1,6 +1,8 @@
 # go
 ## dev 运行
-`go run *.go`
+```sh
+go run *.go
+```
 
 ## 编译 windows 二进制文件
 **GOOS** 目标可执行文件运行操作系统 支持 `darwin` `freebsd` `linux` `windows`
