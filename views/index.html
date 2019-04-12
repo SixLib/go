@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>index</title>
+</head>
+
+<body>
+  <div>fetch</div>
+  <input type="number" name="" id="key">
+  <div id="asyncSend"></div>
+  <button onclick="asyncSend(`process`)">sysInfos</button>
+  <button onclick="asyncSend(`todo`)">todo</button>
+  <button onclick="asyncSend(`todoByKey`)">todoByKey</button>
+</body>
+<script>
+  function asyncSend(val) {
+    var uri = `http://localhost:8080/`;
+    if (val === `todoByKey`) {
+      var key=document.getElementById("key").value;
+      uri = `http://localhost:8080/api/todo/${key}`;
+    }else{
+      uri = `http://localhost:8080/api/${val}`;
+    }
+    fetch(uri, {
+      method: "POST"
+    }).then(function (res) {
+      console.log(res)
+      return res.text()
+    }).then(function (myJson) {
+      document.getElementById("asyncSend").innerHTML = (myJson);
+    });
+  }
+</script>
+
+</html>

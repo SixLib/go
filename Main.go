@@ -10,17 +10,24 @@ import (
 )
 
 const (
-	port = "8080" //配置端口
+	baseAddr = ":3000" //配置端口
 )
 
-func main() {
+/**
+ * Addr 端口
+ */
+func serve(Addr string) {
 	Router := router.NewRouter()
+
 	server := http.Server{
-		Addr:         ":" + port,
+		Addr:         Addr,
 		ReadTimeout:  time.Second,
 		WriteTimeout: time.Second,
 		Handler:      Router,
 	}
-	fmt.Println(`🚀 http://localhost:` + port)
+	fmt.Println(`🚀 http://localhost` + Addr)
 	log.Fatal(server.ListenAndServe())
+}
+func main() {
+	serve(`:8080`)
 }
