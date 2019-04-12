@@ -26,12 +26,16 @@
       uri = `http://localhost:8080/api/${val}`;
     }
     fetch(uri, {
-      method: "POST"
+      method: "POST",
+      headers: { 
+            "Content-Type": "application/json"
+        },
     }).then(function (res) {
       console.log(res)
-      return res.text()
+      return res.json()
     }).then(function (myJson) {
-      document.getElementById("asyncSend").innerHTML = (myJson);
+      document.getElementById("asyncSend").innerHTML = JSON.stringify(myJson);
+      console.log(myJson)
     });
   }
 </script>

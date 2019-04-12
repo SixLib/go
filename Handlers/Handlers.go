@@ -37,9 +37,8 @@ func ProcessHandler(w http.ResponseWriter, r *http.Request) {
 		models.SysInfo{Key: `GOMAXPROCS`, Name: `CPU 核数`, Value: strconv.Itoa(runtime.GOMAXPROCS(0))},
 		models.SysInfo{Key: `Hostname`, Name: `电脑名称`, Value: name},
 	}
-	if err := json.NewEncoder(w).Encode(postMSG); err != nil {
-		panic(err)
-	}
+	result(w, `200`, `success`, postMSG)
+
 }
 
 // todo 接口 handler
@@ -48,12 +47,28 @@ func TodoHandler(w http.ResponseWriter, r *http.Request) {
 		models.Todo{ID: 1, NAME: "TOM"},
 		models.Todo{ID: 2, NAME: "JERRY"},
 	}
-	if err := json.NewEncoder(w).Encode(todos); err != nil {
-		panic(err)
-	}
+	result(w, `200`, `success`, todos)
 }
 func TodoOfKeyHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	result(w, `200`, `success`, `todo key: `+vars["key"])
+}
 
-	fmt.Fprintf(w, "todo key：%v", vars["key"])
+// 定义restful 统一返回数据结构
+type Result struct {
+	Code    string      `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
+// 统一返回数据结构抽象方法
+func result(w http.ResponseWriter, code string, msg string, data interface{}) {
+	result := Result{
+		Code:    code,
+		Message: msg,
+		Data:    data,
+	}
+	if err := json.NewEncoder(w).Encode(result); err != nil {
+		panic(err)
+	}
 }
